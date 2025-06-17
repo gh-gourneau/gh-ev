@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import { viteSingleFile } from "vite-plugin-singlefile"; // ✅ fixed
+import { viteSingleFile } from "vite-plugin-singlefile";
 
 export default defineConfig(({ mode }) => ({
   base: "./",
@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    mode === "production" && viteSingleFile(), // ✅ use the named import
+    mode === "production" && viteSingleFile(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -25,10 +25,6 @@ export default defineConfig(({ mode }) => ({
     assetsInlineLimit: Infinity,
     cssCodeSplit: false,
     outDir: "dist",
-    rollupOptions: {
-      output: {
-        manualChunks: () => "everything.js",
-      },
-    },
+    // ❌ removed manualChunks to avoid conflict with inlineDynamicImports
   },
 }));
