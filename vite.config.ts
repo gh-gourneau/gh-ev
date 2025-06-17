@@ -1,12 +1,11 @@
-// vite.config.ts
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import singlefile from "vite-plugin-singlefile";
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/gh-ev/",  // <--- This line is essential for GitHub Pages
+  base: "./", // important: use relative base for single HTML portability
   server: {
     host: "::",
     port: 8080,
@@ -14,10 +13,22 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
+    mode === "production" && singlefile(),
   ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  build: {
+    target: "esnext",
+    assetsInlineLimit: Infinity,
+    cssCodeSplit: false,
+    outDir: "dist",
+    rollupOptions: {
+      output: {
+        manualChunks: () => "everything.js",
+      },
     },
   },
 }));
