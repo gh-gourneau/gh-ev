@@ -2,10 +2,10 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import singlefile from "vite-plugin-singlefile";
+import { viteSingleFile } from "vite-plugin-singlefile"; // ✅ fixed
 
 export default defineConfig(({ mode }) => ({
-  base: "./", // important: use relative base for single HTML portability
+  base: "./",
   server: {
     host: "::",
     port: 8080,
@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    mode === "production" && singlefile(),
+    mode === "production" && viteSingleFile(), // ✅ use the named import
   ].filter(Boolean),
   resolve: {
     alias: {
