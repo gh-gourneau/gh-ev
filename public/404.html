@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <script>
+        // Redirect all 404s to the main index.html for client-side routing
+        // This works with HashRouter to handle GitHub Pages routing
+        window.location.replace(window.location.origin + window.location.pathname.split('/').slice(0, -1).join('/') + '/#' + window.location.pathname);
+    </script>
+</head>
+<body>
+    <p>Redirecting...</p>
+</body>
+</html>
