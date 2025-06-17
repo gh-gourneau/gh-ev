@@ -13,7 +13,9 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    mode === "production" && viteSingleFile(),
+    mode === "production" && viteSingleFile({
+      removeViteModuleLoader: true,
+    }),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -22,9 +24,15 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     target: "esnext",
-    assetsInlineLimit: Infinity,
+    assetsInlineLimit: 100000000, // 100MB - inline everything
+    chunkSizeWarningLimit: 100000000,
     cssCodeSplit: false,
     outDir: "dist",
-    // ❌ removed manualChunks to avoid conflict with inlineDynamicImports
+    rollupOptions: {
+      inlineDynamicImports: true,
+      output: {
+        manualChunks: () => "everything.js",
+      },
+    },
   },
 }));
